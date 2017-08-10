@@ -1,0 +1,92 @@
+#!/bin/bash
+
+# The script is for finding lost tester's ip
+# Author: Malvin
+# Rev 0.10	 6/30/2017
+
+#########get ip and try to get dnsname
+testername="sd19"
+echo "It's come from T5831-"$testername>$testername.txt
+tempa=`/sbin/ifconfig eth0 | grep "inet addr" | awk '{ print $2}'`
+#echo $tempa
+ipvalue=`echo $tempa|cut -d ':' -f 2`
+echo "ip="$ipvalue>>$testername.txt
+ipname=`nslookup $ipvalue | grep "name" | awk '{ print $4}'`
+#echo $tempb
+#ipname=`echo $tempb|cut -d '.' -f 1`
+echo "dnsname="$ipname>>$testername.txt
+
+#########ftp to tesrv
+
+a_host='10.71.32.138'
+a_user='kei'
+a_passwd='keiuser'
+a_dir='/home/kei/MalvinCui/testerip'
+
+
+echo "ftp -n <<! "                 >ftpfile1
+echo "open $a_host"                >>ftpfile1
+echo "user $a_user $a_passwd"      >>ftpfile1
+echo "binary"                      >>ftpfile1
+##echo "prompt off"                  >>ftpfile1
+echo "cd $a_dir"                   >>ftpfile1
+echo "put $testername.txt"  	   >>ftpfile1
+echo "bye"                         >>ftpfile1
+echo "! "                          >>ftpfile1
+chmod 777 ftpfile1
+./ftpfile1         
+
+exit 0
+
+
+
+
+
+
+
+
+
+
+#/sbin/ifconfig eth0 | grep "inet addr" | awk '{ print $2}'
+#nslookup 10.71.42.121 | grep "name" | awk '{ print $4}'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
